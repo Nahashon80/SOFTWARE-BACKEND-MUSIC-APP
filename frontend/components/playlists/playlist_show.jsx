@@ -19,6 +19,10 @@ class PlaylistShow extends React.Component{
         }
     }
 
+    componentWillUnmount(){
+        this.props.clearPlaylistSongs();
+    }
+
     deleteThisPlaylist(){
         this.props.deletePlaylist(this.props.playlistId)
             .then(() => this.props.history.push("/home"))
@@ -30,7 +34,6 @@ class PlaylistShow extends React.Component{
         // })
 
         if(!this.props.playlist || !this.props.songs || !this.props.albums){
-            debugger
             return null;
         }
 
@@ -38,7 +41,7 @@ class PlaylistShow extends React.Component{
 
         let song_item_props = this.props.songs.map(song => {
             let playlistSong = Object.values(this.props.playlistSongs).find(playlistSong => {
-                return song.id === playlistSong.song_id;
+                return song.id === playlistSong.song_id
             })
             return {
                 song,
@@ -47,25 +50,35 @@ class PlaylistShow extends React.Component{
                 playlistSong,
             }
         })
+
+
+
         let songItems = song_item_props.map(song => {
             let openModalProps = {
                 type: "addToPlaylist",
                 song: song.song,
             }
-            let playlistSongId = song.playlistSong.id
-            return <div key={song.song.id}>
-                        <SongItem
-                            song={song.song}
-                            artist={song.artist}
-                            album={song.album}
-                            playlistSong={song.playlistSong}
-                            openModal={() => this.props.openModal(openModalProps)}
-                            removeSongFromPlaylist={()=>this.props.removeSongFromPlaylist(playlistSongId)}
-                            selectSong = {this.props.selectSong}
-                        />
-                    </div>
+            
+            if(song && song.playlistSong){
+                let playlistSongId = song.playlistSong.id;
+
+                return <div key={song.song.id}>
+                    <SongItem
+                        song={song.song}
+                        artist={song.artist}
+                        album={song.album}
+                        playlistSong={song.playlistSong}
+                        openModal={() => this.props.openModal(openModalProps)}
+                        removeSongFromPlaylist={() => this.props.removeSongFromPlaylist(playlistSongId)}
+                        selectSong={this.props.selectSong}
+                    />
+                </div>
+            }
+            
         })
-        debugger
+
+
+
         return(
             <div className="playlist-show">
                 <div className="playlist-show-header">

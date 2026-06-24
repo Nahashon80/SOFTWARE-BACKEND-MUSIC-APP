@@ -63,13 +63,6 @@ class SongItem extends React.Component{
                             ): null}
                         </button>
                     </div>
-                    {/* <div className="dropdown-trigger-songs">
-                        <button className="dropdown-songs-button">...</button>
-                        <ul className="add-and-delete-playlist">
-                            <li><button onClick={this.props.openModal}>Add To Playlist</button></li>
-                            <li>{removeButton}</li>
-                        </ul>
-                    </div> */}
                 </div>
             </div>
         )
